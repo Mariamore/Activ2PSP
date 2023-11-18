@@ -989,3 +989,7 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact net.minidev:a
 2023-11-18 20:17:07,018 [Stop Help Server] INFO  org.eclipse.jetty.server.Server - Stopped Server@69b1e3e5{STOPPING}[10.0.15,sto=0]
 2023-11-18 20:17:07,032 [Stop Help Server] INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@1c4c57c0{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
 2023-11-18 20:17:07,050 [Stop Help Server] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@5c59d252{/help,null,STOPPED}
+2023-11-18 20:20:15,389 [Worker-7: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2023-11-18 20:22:33,326 [Worker-27: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2023-11-18 20:22:33,347 [Worker-27: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-11-18 20:22:33,353 [Worker-27: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\María\Desktop\ActivMaven\ServicioRestServidor\src\test\resources

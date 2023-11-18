@@ -154,11 +154,11 @@ public class Biblioteca implements IntGestionLibros {
 	
 	//Creamos el método cargarDatos() para poder tener cargados 5 libros en el servidor
 	private void cargarDatos() {
-		libros.add(new Libro(1, "El nombre del viento", "Patrick Rothfuss", 9.75));
-		libros.add(new Libro(2, "Rebelión en la granja", "George Orwell", 8.5));
-		libros.add(new Libro(3, "La chica del tren", "Paula Hawkins", 3));
-		libros.add(new Libro(4, "La verdad sobre el caso Harry Quebert", "Joël Dicker", 7.5));
-		libros.add(new Libro(5, "La sombra del viento", "Carlos Ruiz Zafón", 9.5));
+		libros.add(new Libro(1, "El nombre del viento", "Debolsillo", 9.75));
+		libros.add(new Libro(2, "Rebelión en la granja", "Debolsillo", 8.5));
+		libros.add(new Libro(3, "La chica del tren", "Planeta", 3));
+		libros.add(new Libro(4, "La verdad sobre el caso Harry Quebert", "Alfaguara", 7.5));
+		libros.add(new Libro(5, "La sombra del viento", "Planeta", 9.5));
 		
 	}
 
