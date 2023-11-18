@@ -1,0 +1,101 @@
+package es.serviciorestcliente.controlador;
+
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
+import es.serviciorestcliente.modelo.entidad.Libro;
+
+@Service
+public class ServicioProxyLibro {
+
+	public static final String URL = "http://localhost:8080/biblioteca";
+	
+	@Autowired @Lazy
+	private RestTemplate restTemplate;
+	
+	public Libro alta(Libro l) {
+	
+		try {
+			ResponseEntity<Libro> re = restTemplate.postForEntity(URL, l, Libro.class);
+			System.out.println("alta -> Código de respuesta: " + re.getStatusCode());
+			return re.getBody();
+		} catch (HttpClientErrorException e) {
+			System.out.println("alta -> el libro con ID " + l +" no se ha dado de alta");
+			System.out.println("alta -> Código de respuesta: " + e.getStatusCode());
+			return null;
+		}
+		
+	}
+	
+	public boolean borrar(int iD) {
+		try {
+			restTemplate.delete(URL + "/" + iD);
+			System.out.println("borrar -> Libro con ID " + iD + "borrado.");
+			return true;
+		} catch(HttpClientErrorException e) {
+			System.out.println("borrar -> El libro con ID " + iD + " no se ha borrado");
+			System.out.println("borrar -> Código de respuesta: " + e.getStatusCode());
+			return false;
+			
+		}
+	}
+	
+	public boolean modificar(Libro l) {
+		try {
+			restTemplate.put(URL + "/" + l.getiD(), l, Libro.class);
+			return true;
+		} catch(HttpClientErrorException e) {
+			System.out.println("borrar -> El libro con ID " + l.getiD() + " no se ha borrado");
+			System.out.println("borrar -> Código de respuesta: " + e.getStatusCode());
+			return false;
+			
+		}
+	}
+	
+	public Libro obtenerPorID(int iD) {
+		try {
+			ResponseEntity<Libro> re = restTemplate.getForEntity(URL + "/" +iD, Libro.class);
+			HttpStatusCode hs = re.getStatusCode();
+			if(hs == HttpStatus.OK) {	
+				
+				return re.getBody();
+			}else {
+				System.out.println("obtener -> Respuesta no contemplada");
+				return null;
+			}
+		} catch(HttpClientErrorException e) {
+			System.out.println("obtenerPorID -> El libro con ID " + iD + " no se ha encontrado");
+			System.out.println("obtenerPorID -> Código de respuesta: " + e.getStatusCode());
+			return null;
+			
+		}
+	}
+	
+	public List<Libro> listar(){
+
+		try {
+			
+			ResponseEntity<Libro[]> response = restTemplate.getForEntity(URL ,Libro[].class);
+			Libro[] arrayLibros = response.getBody();
+			return Arrays.asList(arrayLibros);
+			
+		} catch (HttpClientErrorException e) {
+			
+			System.out.println("listar -> Error al obtener la lista de libros");
+		    System.out.println("listar -> Codigo de respuesta: " + e.getStatusCode());
+		    return null;
+		    
+		}
+	}
+}
+

@@ -1,0 +1,154 @@
+package es.serviciorestcliente;
+
+
+import java.util.List;
+import java.util.Scanner;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+import es.serviciorestcliente.controlador.ServicioProxyLibro;
+import es.serviciorestcliente.modelo.entidad.Libro; 
+
+@SpringBootApplication
+public class ServicioRestClienteApplication implements CommandLineRunner {
+
+	//Inyectamos los objetos que necesitamos para acceder a ServidorRestServidor
+	
+	@Autowired 
+	private ServicioProxyLibro spl;
+	
+	//Tendremos que acceder al contexto de Spring para poder parar la aplicación
+	@Autowired 
+	private ApplicationContext context;
+	
+	//Ahora creamos un método para dar de alta un objeto de tipo RestTemplate, 
+	//que será usado por el objeto ServicioProxyLibro para hacer las peticiones
+	//HTTP al servicio REST
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("ClienteRest -> Cargando el contenido de Spring");
+		SpringApplication.run(ServicioRestClienteApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("-------- Arrancando el Cliente Rest --------");
+		int opcion = menu();
+		Scanner sc = new Scanner(System.in);
+		
+		
+		switch (opcion) {
+			case 1:
+				Libro libro = pedirDatosAlta();
+				Libro altaLibro = spl.alta(libro);
+				System.out.println("run -> Libro dado de alta " + altaLibro);
+				break;
+			case 2:
+				System.out.println("Introduce el id del libro a eliminar:");
+				int iD = sc.nextInt();
+				boolean borrado = spl.borrar(iD);
+				System.out.println("run -> ¿Se ha borrado el libro? " + borrado);
+				break;
+			case 3:
+				Libro libro2 = pedirDatosModificar();
+				break;
+			case 4:
+				System.out.println("Introduce el id del libro a buscar:");
+				int iD1 = sc.nextInt();
+				Libro libro3 = spl.obtenerPorID(iD1);
+				System.out.println("run -> Libro con ID "+ iD1 + " :" + libro3);
+				break;
+			case 5:
+				List<Libro> listaLibros = spl.listar();
+				listaLibros.forEach((v) -> System.out.println(v));
+				break;
+			case 6:
+				System.out.println("------------------------------------------");		
+				System.out.println("-------- Parando el Cliente REST --------");	
+				pararAplicacion();
+				break;
+			default:
+				System.out.println("Error");
+		
+		}
+	}
+
+	public static int menu() {
+		Scanner sc = new Scanner(System.in);
+		int opcion = 0;
+		
+		 System.out.println(" ------ MENÚ ------- ");
+		 System.out.println("1. Dar de alta un libro");
+		 System.out.println("2. Dar de baja un libro por ID");
+		 System.out.println("3. Modificar un libro por ID");
+		 System.out.println("4. Obtener un libro por ID");
+		 System.out.println("5. Listar todos los libros");
+		 System.out.println("6. Salir");
+		 
+		 while(opcion > 6 || opcion < 1) {
+			 System.out.println("Introduce el número de la opción elegida:");
+			 try {
+			 opcion = sc.nextInt();
+			 } catch (NumberFormatException e) {
+				 System.out.println("Error -> Introduce un dato de tipo numérico");
+			 } catch (Exception e) {
+				 System.out.println("Error genérico");
+			 }
+			 
+		 }
+		 return opcion;
+		
+	}
+	
+	public Libro pedirDatosAlta() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduce el título del libro:");
+		String titulo = sc.nextLine();
+		System.out.println("Introduce la editorial del libro:");
+		String editorial = sc.nextLine();
+		System.out.println("Introduce la nota del libro:");
+		Double nota = sc.nextDouble();
+		Libro libro = new Libro();
+		libro.setTitulo(titulo);
+		libro.setEditorial(editorial);
+		libro.setNota(nota);
+		return libro;
+	}
+	
+	public Libro pedirDatosModificar() {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduce el ID del libro a modificar:");
+		int iD = sc.nextInt();
+		System.out.println("Introduce el título del libro a modificar:");
+		String titulo = sc.nextLine();
+		System.out.println("Introduce la editorial del libro a modificar:");
+		String editorial = sc.nextLine();
+		System.out.println("Introduce la nota del libro a modificar:");
+		Double nota = sc.nextDouble();
+		Libro libro = new Libro();
+		libro.setiD(iD);
+		libro.setTitulo(titulo);
+		libro.setEditorial(editorial);
+		libro.setNota(nota);
+		return libro;
+	}
+	
+	public void pararAplicacion() {
+		
+		SpringApplication.exit(context, () -> 0);
+		
+	}
+}
