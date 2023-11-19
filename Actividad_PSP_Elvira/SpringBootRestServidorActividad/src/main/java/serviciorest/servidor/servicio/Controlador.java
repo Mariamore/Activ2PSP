@@ -39,7 +39,7 @@ public class Controlador {
 	 */
 	
 	@GetMapping(path="libros/{idLibro}",produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<Libros>buscarLibro(@PathVariable("idLibro") int id) {
+	public ResponseEntity<Libros>buscarLibro(@PathVariable("id") int id) {
 		System.out.println("Buscando Libro con id: " + id);
 		Libros l = daoLibros.get(id);
 		if(l != null) {
@@ -79,17 +79,10 @@ public class Controlador {
 	 */
 	
 	@GetMapping(path="libros",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Libros>> listarLibros(
-			@RequestParam(name="titulo",required=false) String titulo) {
+	public ResponseEntity<List<Libros>> listarLibros() {
 		List<Libros> listaLibros = null;
-		//Si no me viene el nombre, devolvemos toda la lista
-		if(titulo == null || titulo.isEmpty()) {
-			System.out.println("Listando libros ");
-			listaLibros = daoLibros.list();	
-		}else {
-			System.out.println("Listando los titulos: "+ titulo);
-			listaLibros = daoLibros.listaTitulos(titulo);
-		}
+		System.out.println("Listando todos los libros");
+		listaLibros = daoLibros.list();	
 		return new ResponseEntity<List<Libros>>(listaLibros,HttpStatus.OK);
 		
 	}
@@ -137,7 +130,7 @@ public class Controlador {
 		if(l != null) {
 			return new ResponseEntity<Libros>(l,HttpStatus.OK);//200 OK
 		}else {
-			return new ResponseEntity<Libros>(HttpStatus.NOT_FOUND);//404 NOT FOUND
+			return new ResponseEntity<Libros>(l,HttpStatus.NOT_FOUND);//404 NOT FOUND
 		}
 	}
 }

@@ -126,7 +126,6 @@ import serviciorest.cliente.servicio.ServicioProxyLibro;
 				libroModificado.setNota(notaModificada);
 				
 				boolean lModificar = spl.modificarLibro(libroModificado);
-	
 				break;	
 				
 			case 4:
@@ -134,12 +133,13 @@ import serviciorest.cliente.servicio.ServicioProxyLibro;
 				System.out.println("Dame el id del libro que quieres obtener");
 				int idObtenerLibro = sc.nextInt();
 				Libros libroObtenido = spl.obtenerLibro(idObtenerLibro);
-				
+				break;
 			case 5:
 				
 				System.out.println("Lista de libros");
-				List<Libros> listaLibros = spl.listaLibros(null); //NullS
-				
+				List<Libros> listaLibros = spl.listaLibros();
+				System.out.println(listaLibros);
+				break;
 				
 				
 			case 6:
@@ -168,10 +168,10 @@ import serviciorest.cliente.servicio.ServicioProxyLibro;
 			System.out.println("4.-Obtener un libro por ID");
 			System.out.println("5.-Listar todos los libros");
 			System.out.println("6.-Salir");
-			System.out.println("teclea una op del 1 al 5, para salir");
+			System.out.println("teclea una op del 1 al 6, para salir");
 			opcion=leer.nextInt();
 			while(opcion<1 || opcion>6) {
-				System.out.println("del 1 al 5");
+				System.out.println("del 1 al 6");
 				opcion=leer.nextInt();
 			}
 			return opcion;

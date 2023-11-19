@@ -3,6 +3,7 @@ package serviciorest.cliente.servicio;
 import java.util.Arrays;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -10,13 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import serviciorest.cliente.entidad.Libros;
 
 @Service
 public class ServicioProxyLibro {
 	
-	public static final String URL = "http://localhost:8090/DaoLibros";
+	public static final String URL = "http://localhost:8080/libros";
 	
 	@Autowired @Lazy
 	private RestTemplate restTemplate; //Ayudará para las peticiones HTTP al servicio REST
@@ -31,15 +31,13 @@ public class ServicioProxyLibro {
 	public Libros obtenerLibro (int id) {
 		
 		try {
-			ResponseEntity<Libros> re = restTemplate.getForEntity(URL + "/" + id, Libros.class);
+			ResponseEntity<Libros> re = restTemplate.getForEntity(URL + "/" +id, Libros.class);
 			HttpStatus hs = (HttpStatus) re.getStatusCode(); //Preguntamos por el codigo de respuesta
-			if(hs == HttpStatus.OK) {
-				
+			if(hs.equals(HttpStatus.OK)) {
 				return re.getBody();
 			}else {
 				return null;
-			}
-					
+			}			
 		} catch (HttpClientErrorException e) {
 			System.out.println("El libro con el id " + id + " no se ha encontrado");
 			System.out.println("Codigo de respuesta: " + e.getStatusCode());
@@ -100,7 +98,7 @@ public class ServicioProxyLibro {
 	 */
 	public boolean eliminar (int id) {
 		try {
-			restTemplate.delete(URL + id);
+			restTemplate.delete(URL + "/" + id);
 			return true;
 		} catch (HttpClientErrorException e) {
 			System.out.println("ELIMINAR LIBRO: El libro se ha eliminado, id: " + id);
@@ -117,15 +115,10 @@ public class ServicioProxyLibro {
 	 * @param titulo Título del libro a buscar (puede ser nulo, en ese caso devolveria la lista entera)
 	 * @return Lista de los libros que  contienen el título, en caso de error, devuelve null
 	 */
-	public List<Libros> listaLibros(String titulo){
+	public List<Libros> listaLibros(){
 		
-		String parametro = "";
 		
-		if(titulo != null) {
-			parametro += "?titulo=" + titulo;
-		}
-		
-		try {ResponseEntity<Libros[]> respuesta = restTemplate.getForEntity(URL + parametro, Libros[].class);
+		try {ResponseEntity<Libros[]> respuesta = restTemplate.getForEntity(URL, Libros[].class);
 		
 			Libros[] arrayLibros = respuesta.getBody();
 			return Arrays.asList(arrayLibros);//usamos asList para convertir el Array en una lista

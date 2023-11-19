@@ -72,18 +72,18 @@ public class DaoLibros {
 	 * @return devolvemos la lista sin el elemento borrado, null en caso que el id no exita.
 	 */
 	
-	public Libros delete(int posicion) {
-	    try {
-	        if (posicion >= 0 && posicion < listaLibros.size()) {
-	            return listaLibros.remove(posicion);
-	        } else {
-	            System.out.println("Eliminar -> Posición no válida");
-	            return null;
-	        }
-	    } catch (IndexOutOfBoundsException e) {
-	        System.out.println("Eliminar -> Índice fuera de los límites");
-	        return null;
-	    }
+	public Libros delete(int id) {
+	    Libros libro = new Libros();
+		libro.setId(id);
+		int posicion =listaLibros.indexOf(libro);
+		if(posicion == -1) {
+			System.out.println("Eliminar: NO se ha podido eliminar el libro " + id);
+			return null;
+		} else {
+			
+			System.out.println("Eliminamos el libro con id :" + id);
+			return listaLibros.remove(posicion);
+		}
 	}
 	
 	
@@ -127,11 +127,17 @@ public class DaoLibros {
 	 */
 	
 	
-	public Libros get(int posicion) {
-		try {
+	public Libros get(int id) {
+		Libros libro = new Libros();
+		libro.setId(id);
+		
+		int posicion = listaLibros.indexOf(id); //devolvemos con indexOf
+		
+		if(posicion != -1) {
+			System.out.println("Buscando libro: " +  id);
 			return listaLibros.get(posicion);
-		} catch (IndexOutOfBoundsException iobe) {
-			System.out.println("Persona fuera de rango");
+		}else {
+			System.out.println("Libro no encontrado: " + id);
 			return null;
 		}
 	}
