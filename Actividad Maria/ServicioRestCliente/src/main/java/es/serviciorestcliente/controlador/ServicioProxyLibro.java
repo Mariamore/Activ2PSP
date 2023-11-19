@@ -19,7 +19,7 @@ public class ServicioProxyLibro {
 
 	public static final String URL = "http://localhost:8080/biblioteca";
 	
-	@Autowired @Lazy
+	@Autowired
 	private RestTemplate restTemplate;
 	
 	
