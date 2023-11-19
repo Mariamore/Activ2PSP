@@ -14,12 +14,12 @@ import org.springframework.web.client.RestTemplate;
 
 import es.serviciorestcliente.modelo.entidad.Libro;
 
-@Service
+@Service 
 public class ServicioProxyLibro {
 
 	public static final String URL = "http://localhost:8080/biblioteca";
 	
-	@Autowired
+	@Autowired @Lazy
 	private RestTemplate restTemplate;
 	
 	
