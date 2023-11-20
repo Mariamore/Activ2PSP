@@ -1,5 +1,6 @@
 package servicioRest.persistencia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class DaoLibro {
 		Libro libro3 = new Libro(contador++,"No digas que fue un sueño","Planeta",7);
 		Libro libro4 = new Libro(contador++,"Crónica del pájaro que da cuerda al mundo","Tusquets",9);
 		Libro libro5 = new Libro(contador++,"El nombre del viento","Plaza & Janés",8);
+		listaLibros = new ArrayList<Libro>();
 		listaLibros.add(libro1);
 		listaLibros.add(libro2);
 		listaLibros.add(libro3);
@@ -27,9 +29,29 @@ public class DaoLibro {
 	}
 	
 	// Método add que añade un libro pasado por parámetro
-	public void add(Libro l) {
-		l.setId(contador++);
-		listaLibros.add(l);
+	public Libro add(Libro l) {
+		//Primero comprobamos que el libro no exista
+		if (listaLibros.contains(l)) {
+			System.out.println("El libro ya se encuentra dado de alta");
+			l = null;
+		}else {
+			//Comprobamos que no exista ningún libro con el mismo título
+			String titulo = l.getTitulo();
+			boolean repetido = false;
+			for(Libro b : listaLibros) {
+				if(b.getTitulo().equalsIgnoreCase(titulo)) {
+					repetido = true;
+				}
+			}
+			if (repetido) {
+				System.out.println("Ya existe un libro dado de alta con ese título");
+				l = null;
+			}else {
+				l.setId(contador++);
+				listaLibros.add(l);
+			}
+		}
+		return l;
 	}
 	
 	// Método delete que borra el libro con ID pasado por parámetro

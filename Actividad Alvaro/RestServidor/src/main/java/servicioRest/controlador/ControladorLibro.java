@@ -35,13 +35,16 @@ public class ControladorLibro {
 		}
 	}
 	
-	//POST para dar de alta un libro
+	//POST para dar de alta un libro que no exista previamente
 	@PostMapping(path="libros",consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Libro> altaLibro(@RequestBody Libro l) {
-		System.out.println("Se ha dado de alta el siguiente libro: " + l);
-		daoLibro.add(l);
-		return new ResponseEntity<Libro>(l,HttpStatus.CREATED);
+		Libro libro = daoLibro.add(l);
+		if(libro!=null) {
+			return new ResponseEntity<Libro>(l,HttpStatus.CREATED);
+		}else {
+			return new ResponseEntity<Libro>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	//GET listado completo de libros

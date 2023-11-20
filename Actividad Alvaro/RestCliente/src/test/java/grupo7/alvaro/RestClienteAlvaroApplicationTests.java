@@ -1,10 +1,10 @@
-package servicioRest;
+package grupo7.alvaro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Actividad2AlvaroApplicationTests {
+class RestClienteAlvaroApplicationTests {
 
 	@Test
 	void contextLoads() {
